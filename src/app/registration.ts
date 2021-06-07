@@ -27,16 +27,16 @@ export default ({ app }: { app: express.Application }) => {
    * Health Check endpoints
    */
   app.get("/status", (req, res) => {
-    res.status(200).end("Connection Successful");
+    res.status(200).end("Connection Successful.");
   });
   app.head("/status", (req, res) => {
     res.status(200).end();
   });
 
   /**
-   * Credential Creation Options
+   * Credential Creation Options.
    */
-  const appId = `{'appId':'http://localhost:61904'}`;
+  const appId = `{'appId':'http://${toolHost}'}`;
   var requestId;
 
   app.post("/attestation/options", async (req, res) => {
@@ -77,7 +77,7 @@ export default ({ app }: { app: express.Application }) => {
       // start-registration
       await axios({
         method: "post",
-        url: `https://${config.host}:9443/api/users/v2/me/webauthn/start-registration`,
+        url: `https://${isHost}/api/users/v2/me/webauthn/start-registration`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Basic ${auth}`,
@@ -135,7 +135,7 @@ export default ({ app }: { app: express.Application }) => {
       // start-usernameless-registration
       await axios({
         method: "post",
-        url: `https://${config.host}:9443/api/users/v2/me/webauthn/start-usernameless-registration`,
+        url: `https://${isHost}/api/users/v2/me/webauthn/start-usernameless-registration`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Basic ${auth}`,
@@ -332,7 +332,7 @@ export default ({ app }: { app: express.Application }) => {
     // Finish registration request
     var x = await axios({
       method: "post",
-      url: `https://${config.host}:9443/api/users/v2/me/webauthn/finish-registration`,
+      url: `https://${isHost}/api/users/v2/me/webauthn/finish-registration`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${auth}`,
@@ -373,7 +373,7 @@ const searchUser = async (req) => {
   return await axios({
     method: "post",
 
-    url: `https://${config.host}:9443/scim2/Users/.search`,
+    url: `https://${isHost}/scim2/Users/.search`,
     headers: {
       "Content-Type": "application/scim+json",
       Authorization: "Basic YWRtaW46YWRtaW4=",
@@ -407,7 +407,7 @@ const createUser = async (userData) => {
   try {
     return await axios({
       method: "post",
-      url: `https://${config.host}:9443/scim2/Users`,
+      url: `https://${isHost}/scim2/Users`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Basic YWRtaW46YWRtaW4=",
@@ -438,7 +438,7 @@ const createClaim = async (claimData) => {
   try {
     return await axios({
       method: "post",
-      url: `https://${config.host}:9443/api/server/v1/claim-dialects/local/claims`,
+      url: `https://${isHost}/api/server/v1/claim-dialects/local/claims`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
@@ -472,7 +472,7 @@ const setClaim = async (claimData) => {
     return await axios({
       method: "put",
       url:
-        "https://localhost:9443/api/server/v1/claim-dialects/local/claims/test",
+        "https://${isHost}/api/server/v1/claim-dialects/local/claims/test",
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
