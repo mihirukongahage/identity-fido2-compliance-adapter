@@ -10,13 +10,14 @@ let requestId: any;
 let sessionDataKey: any;
 let host = "localhost";
 let auth: any;
+let isHost = config.isHost;
 
 export default ({ app }: { app: express.Application }) => {
   /**
    * Health Check endpoints registration
    */
   app.get("/status/registration", (req, res) => {
-    res.status(200).end("Reg Connection Successful");
+    res.status(200).end("Registration Connection Successful.");
   });
   app.head("/status/registration", (req, res) => {
     res.status(200).end();
@@ -27,13 +28,12 @@ export default ({ app }: { app: express.Application }) => {
 
   app.post("/assertion/options", async (req, res) => {
     console.log(`Request @ /assertion/options`);
-
-    // Client Id of the sample app
-    var client_id = config.sampleAppId;
+    var client_id = config.sampleAppId;  // Client Id of the sample app
 
     auth = encode.encode(`${req.body.username}:password`, "base64");
 
-    var url = `https://${host}:9443/oauth2/authorize?scope=openid&response_type=code&redirect_uri=http://localhost.com:8080/pickup-dispatch/oauth2client&client_id=${client_id}`;
+    var url = `https://${isHost}/oauth2/authorize?scope=openid&response_type=code&redirect_uri=${redirectURI}&client_id=$
+    {client_id}`;
 
     // start-authentication
     return await axios({
@@ -43,7 +43,7 @@ export default ({ app }: { app: express.Application }) => {
         Connection: "keep-alive",
         Accept:
           "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        Host: "localhost:9443",
+        Host: isHost,
         ContentType: "application/json",
         Authorization: `Basic ${auth}`,
       },
@@ -96,11 +96,12 @@ export default ({ app }: { app: express.Application }) => {
 
     var tokenResponse: any = JSON.parse(JSON.stringify(tr));
 
-    var referer = `https://${host}:9443/authenticationendpoint/fido2-auth.jsp?authenticators=FIDOAuthenticator%3ALOCAL&type=fido&sessionDataKey=${sessionDataKey}&data=${tr}`;
+    var referer = `https://${isHost}/authenticationendpoint/fido2-auth
+    .jsp?authenticators=FIDOAuthenticator%3ALOCAL&type=fido&sessionDataKey=${sessionDataKey}&data=${tr}`;
 
     axios
       .post(
-        `https://${host}:9443/commonauth`,
+        `https://${isHost}/commonauth`,
         querystring.stringify({
           sessionDataKey: sessionDataKey,
           tokenResponse: tr,

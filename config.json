@@ -1,4 +1,8 @@
 {
   "sampleAppId": "rQo3iAdNWqXziqursNNpxhTwW2Ua",
-  "host": "localhost"
+  "host": "localhost",
+  "isHost": "localhost:9443",
+  "conformanceMetadataPath": "D:/Projects/fido2-adapter/src/app/fido-conformance-mds",
+  "redirectURI": "http://localhost.com:8080/pickup-dispatch/oauth2client",
+  "toolHost": "localhost:61904"
 }
